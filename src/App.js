@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import "./App.css";
 
@@ -6,6 +6,7 @@ import Modal from './components/Modal';
 import Rules from './components/Rules';
 import DecodingBoard from './components/DecodingBoard';
 import CodePegs from './components/CodePegs'
+import Footer from './components/Footer'
 
 function App() {
   return (
