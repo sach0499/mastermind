@@ -8,12 +8,18 @@ import DecodingBoard from "./components/DecodingBoard";
 import CodePegs from "./components/CodePegs";
 import Footer from "./components/Footer";
 
+import {BASE_COLORS} from './utils/constants'
+
 function App() {
+  const [selectedColor, setSelectedColor] = useState(BASE_COLORS[0]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
 
-  const resetGameHandler = () => {
+  const selectColorHandler = (color) => {
+    setSelectedColor(color);
   };
+
+  const resetGameHandler = () => {};
 
   return (
     <div className="container">
@@ -26,7 +32,7 @@ function App() {
       <Rules />
       <div className="main-section">
         <DecodingBoard />
-        <CodePegs />
+        <CodePegs colors={BASE_COLORS} selectedColor={selectedColor} onSelectColor={selectColorHandler} />
       </div>
       <Footer />
     </div>

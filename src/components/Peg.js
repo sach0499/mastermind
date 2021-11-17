@@ -1,5 +1,7 @@
 import React from "react";
 
+import './Peg.css'
+
 function Peg({ color, isSelected, onSelectColor }) {
   return (
     <div
