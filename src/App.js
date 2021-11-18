@@ -39,9 +39,15 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
 
-
   const selectColorHandler = (color) => {
     setSelectedColor(color);
+  };
+
+  const colorPegHandler = (blockId, pegId) => {
+    if (blockId !== currentRound) return;
+
+    boardColors[blockId][pegId] = selectedColor;
+    setBoardColors([...boardColors]);
   };
 
   const resetGameHandler = () => {};
@@ -62,6 +68,7 @@ function App() {
           boardHintsState={boardHintsState}
           currentRound={currentRound}
           allPegsFilled={countPegsFilled === NUM_PEGS}
+          onClickPeg={colorPegHandler}
         />
         <CodePegs
           colors={BASE_COLORS}

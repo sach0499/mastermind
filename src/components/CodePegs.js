@@ -6,7 +6,7 @@ function CodePegs({colors, selectedColor, onSelectColor}) {
   return (
     <div className="color-selector">
       {colors.map((color) => (
-        <Peg color={color} isSelected={color === selectedColor} onSelectColor={onSelectColor} key={color} />
+        <Peg color={color} isSelected={color === selectedColor} onClickPeg={onSelectColor} key={color} />
       ))}
     </div>
   );

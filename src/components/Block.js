@@ -25,6 +25,7 @@ function Block({
         blockColor={blockColor}
         selectedColor={selectedColor}
         onClickPeg={onClickPeg}
+        blockId={blockId}
       />
       <button
         className={`submit-button ${
