@@ -69,7 +69,6 @@ function App() {
   const submitButtonHandler = (blockId) => {
     if (blockId !== currentRound) return;
 
-    // compare selected block color with master color
     const blockColor = boardColors[blockId];
     const blockHintsState = findHintsState(blockColor, masterColor);
 
@@ -92,7 +91,15 @@ function App() {
     }
   };
 
-  const resetGameHandler = () => {};
+  const resetGameHandler = () => {
+    setMasterColor([...generateNDistinctColors(4, BASE_COLORS)]);
+    setCurrentRound(0);
+    setBoardColors([...generateBoardColors()]);
+    setBoardHintsState([...generateHintsState()]);
+    setCountPegsFilled(0);
+    setGameOver(false);
+    setGameWon(false);
+  };
 
   return (
     <div className="container">
