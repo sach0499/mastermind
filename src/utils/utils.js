@@ -1,5 +1,3 @@
-import { BASE_COLORS } from "./constants";
-
 export const generateBoardColors = (
   NUM_BLOCKS,
   NUM_PEGS,
@@ -35,9 +33,38 @@ export const generateHintsState = (
 };
 
 const compareBlockColorWithMasterColor = (blockColor, masterColor) => {
+  const newBlockColor = [...blockColor];
+  const newMasterColor = [...masterColor];
+
   let exactMatch = 0;
   let halfMatch = 0;
   let noMatch = 0;
+
+  const NUM_PEGS = newBlockColor.length;
+
+  for (let idx = 0; idx < NUM_PEGS; idx++) {
+    const color = newBlockColor[idx];
+    const matchColor = newMasterColor[idx];
+
+    if (color === matchColor) {
+      exactMatch++;
+      newMasterColor[idx] = "";
+      newBlockColor[idx] = "";
+    }
+  }
+
+  for (let idx = 0; idx < NUM_PEGS; idx++) {
+    const color = newBlockColor[idx];
+    if (color === "") continue;
+
+    const colorIdx = newMasterColor.indexOf(color);
+    if (colorIdx !== -1) {
+      halfMatch++;
+      newMasterColor[colorIdx] = "";
+    } else {
+      noMatch++;
+    }
+  }
 
   return { exactMatch, halfMatch, noMatch };
 };
@@ -46,7 +73,6 @@ export const findHintsState = (blockColor, masterColor) => {
   let matches = compareBlockColorWithMasterColor(blockColor, masterColor);
 
   let hintsState = [];
-
   hintsState.push(...Array(matches.exactMatch).fill("exact-match"));
   hintsState.push(...Array(matches.halfMatch).fill("half-match"));
   hintsState.push(...Array(matches.noMatch).fill("no-match"));
@@ -69,6 +95,7 @@ export const generateNDistinctColors = (N, inputColors) => {
     const color = inputColors[idx];
 
     if (!generatedColors.includes(color)) {
+      console.log(idx + 1);
       generatedColors.push(color);
     }
   }
