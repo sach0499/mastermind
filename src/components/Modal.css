@@ -14,6 +14,8 @@ modal-container {
   color: white;
   font-size: 30px;
   font-weight: 600;
+  text-align: center;
+  width: 300px;
 }
 
 .overlay {

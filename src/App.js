@@ -72,7 +72,7 @@ function App() {
     const blockColor = boardColors[blockId];
     const blockHintsState = findHintsState(blockColor, masterColor);
 
-    console.log(blockHintsState)
+    console.log(blockHintsState);
 
     boardHintsState[blockId] = blockHintsState;
     setBoardHintsState([...boardHintsState]);
@@ -94,8 +94,12 @@ function App() {
   const resetGameHandler = () => {
     setMasterColor([...generateNDistinctColors(4, BASE_COLORS)]);
     setCurrentRound(0);
-    setBoardColors([...generateBoardColors()]);
-    setBoardHintsState([...generateHintsState()]);
+    setBoardColors([
+      ...generateBoardColors(NUM_BLOCKS, NUM_PEGS, DEFAULT_PEG_COLOR),
+    ]);
+    setBoardHintsState([
+      ...generateHintsState(NUM_BLOCKS, NUM_PEGS, DEFAULT_HINT_STATE),
+    ]);
     setCountPegsFilled(0);
     setGameOver(false);
     setGameWon(false);
