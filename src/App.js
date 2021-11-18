@@ -8,7 +8,13 @@ import DecodingBoard from "./components/DecodingBoard";
 import CodePegs from "./components/CodePegs";
 import Footer from "./components/Footer";
 
-import { generateBoardColors, generateHintsState } from "./utils/utils";
+import {
+  generateBoardColors,
+  generateHintsState,
+  findHintsState,
+  findPlayerWonGame,
+  generateNDistinctColors,
+} from "./utils/utils";
 
 import {
   BASE_COLORS,
@@ -17,6 +23,7 @@ import {
   NUM_PEGS,
   DEFAULT_PEG_COLOR,
   DEFAULT_HINT_STATE,
+  LAST_ROUND,
 } from "./utils/constants";
 
 const INITIAL_BOARD_COLORS = generateBoardColors(
@@ -30,11 +37,15 @@ const INITIAL_HINTS_STATE = generateHintsState(
   DEFAULT_HINT_STATE
 );
 
+const INITIAL_MASTER_COLOR = generateNDistinctColors(4, BASE_COLORS);
+
 function App() {
+  const [masterColor, setMasterColor] = useState([...INITIAL_MASTER_COLOR]);
+
   const [boardColors, setBoardColors] = useState(INITIAL_BOARD_COLORS);
   const [boardHintsState, setBoardHintsState] = useState(INITIAL_HINTS_STATE);
   const [currentRound, setCurrentRound] = useState(FIRST_ROUND);
-  const [countPegsFilled, setPegsSlotsFilled] = useState(0);
+  const [countPegsFilled, setCountPegsFilled] = useState(0);
   const [selectedColor, setSelectedColor] = useState(BASE_COLORS[0]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
@@ -46,8 +57,39 @@ function App() {
   const colorPegHandler = (blockId, pegId) => {
     if (blockId !== currentRound) return;
 
+    const prevColor = boardColors[blockId][pegId];
+
+    if (prevColor === DEFAULT_PEG_COLOR)
+      setCountPegsFilled(countPegsFilled + 1);
+
     boardColors[blockId][pegId] = selectedColor;
     setBoardColors([...boardColors]);
+  };
+
+  const submitButtonHandler = (blockId) => {
+    if (blockId !== currentRound) return;
+
+    // compare selected block color with master color
+    const blockColor = boardColors[blockId];
+    const blockHintsState = findHintsState(blockColor, masterColor);
+
+    console.log(blockHintsState)
+
+    boardHintsState[blockId] = blockHintsState;
+    setBoardHintsState([...boardHintsState]);
+
+    const isGameWon = findPlayerWonGame(blockHintsState);
+
+    if (isGameWon) {
+      setGameOver(true);
+      setGameWon(true);
+    } else if (currentRound === LAST_ROUND) {
+      setGameOver(true);
+      setGameWon(false);
+    } else {
+      setCurrentRound(currentRound + 1);
+      setCountPegsFilled(0);
+    }
   };
 
   const resetGameHandler = () => {};
@@ -69,6 +111,7 @@ function App() {
           currentRound={currentRound}
           allPegsFilled={countPegsFilled === NUM_PEGS}
           onClickPeg={colorPegHandler}
+          onClickSubmitButton={submitButtonHandler}
         />
         <CodePegs
           colors={BASE_COLORS}
