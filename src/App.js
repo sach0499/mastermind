@@ -16,6 +16,9 @@ import {
   generateNDistinctColors,
 } from "./utils/utils";
 
+
+import { useLocalState } from "./utils/CustomHooks";
+
 import {
   BASE_COLORS,
   FIRST_ROUND,
@@ -39,45 +42,62 @@ const INITIAL_HINTS_STATE = generateHintsState(
 
 const INITIAL_MASTER_COLOR = generateNDistinctColors(4, BASE_COLORS);
 
+
 function App() {
-  const [masterColor, setMasterColor] = useState([...INITIAL_MASTER_COLOR]);
-  const [boardColors, setBoardColors] = useState(INITIAL_BOARD_COLORS);
-  const [boardHintsState, setBoardHintsState] = useState(INITIAL_HINTS_STATE);
-  const [currentRound, setCurrentRound] = useState(FIRST_ROUND);
-  const [countPegsFilled, setCountPegsFilled] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(BASE_COLORS[0]);
-  const [gameOver, setGameOver] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
+  const [masterColor, setMasterColor] = useLocalState("master-color", [
+    ...INITIAL_MASTER_COLOR,
+  ]);
+  const [boardColors, setBoardColors] = useLocalState(
+    "board-colors",
+    INITIAL_BOARD_COLORS
+  );
+  const [boardHintsState, setBoardHintsState] = useLocalState(
+    "board-hints-state",
+    INITIAL_HINTS_STATE
+  );
+  const [currentRound, setCurrentRound] = useLocalState(
+    "current-round",
+    FIRST_ROUND
+  );
+  const [countPegsFilled, setCountPegsFilled] = useLocalState(
+    "count-pegs-filled",
+    0
+  );
+  const [selectedColor, setSelectedColor] = useLocalState(
+    "selected-color",
+    BASE_COLORS[0]
+  );
+  const [gameOver, setGameOver] = useLocalState("game-over", false);
+  const [gameWon, setGameWon] = useLocalState("game-won", false);
 
+  // // rehydrate state from local storage
+  // useEffect(() => {
+  //   const isStateSaved = JSON.parse(localStorage.getItem("is-state-saved"));
+  //   if (isStateSaved) {
+  //     setMasterColor(JSON.parse(localStorage.getItem("master-color")));
+  //     setSelectedColor(JSON.parse(localStorage.getItem("selected-color")));
+  //     setCurrentRound(JSON.parse(localStorage.getItem("current-round")));
+  //     setBoardColors(JSON.parse(localStorage.getItem("board-colors")));
+  //     setCountPegsFilled(JSON.parse(localStorage.getItem("count-pegs-filled")));
+  //     setBoardHintsState(JSON.parse(localStorage.getItem("board-hints-state")));
+  //     setGameOver(JSON.parse(localStorage.getItem("game-over")));
+  //     setGameWon(JSON.parse(localStorage.getItem("game-won")));
+  //   }
+  // }, []);
 
-  // rehydrate state from local storage
-  useEffect(() => {
-    const isStateSaved = JSON.parse(localStorage.getItem("is-state-saved"));
-    if (isStateSaved) {
-      setMasterColor(JSON.parse(localStorage.getItem("master-color")));
-      setSelectedColor(JSON.parse(localStorage.getItem("selected-color")));
-      setCurrentRound(JSON.parse(localStorage.getItem("current-round")));
-      setBoardColors(JSON.parse(localStorage.getItem("board-colors")));
-      setCountPegsFilled(JSON.parse(localStorage.getItem("count-pegs-filled")));
-      setBoardHintsState(JSON.parse(localStorage.getItem("board-hints-state")));
-      setGameOver(JSON.parse(localStorage.getItem("game-over")));
-      setGameWon(JSON.parse(localStorage.getItem("game-won")));
-    }
-  }, []);
+  // // save state on local storage
+  // useEffect(() => {
+  //   localStorage.setItem("is-state-saved", JSON.stringify(true));
 
-  // save state on local storage
-  useEffect(() => {
-    localStorage.setItem("is-state-saved", JSON.stringify(true));
-
-    localStorage.setItem("master-color", JSON.stringify(masterColor));
-    localStorage.setItem("selected-color", JSON.stringify(selectedColor));
-    localStorage.setItem("current-round", JSON.stringify(currentRound));
-    localStorage.setItem("board-colors", JSON.stringify(boardColors));
-    localStorage.setItem("count-pegs-filled", JSON.stringify(countPegsFilled));
-    localStorage.setItem("board-hints-state", JSON.stringify(boardHintsState));
-    localStorage.setItem("game-over", JSON.stringify(gameOver));
-    localStorage.setItem("game-won", JSON.stringify(gameWon));
-  });
+  //   localStorage.setItem("master-color", JSON.stringify(masterColor));
+  //   localStorage.setItem("selected-color", JSON.stringify(selectedColor));
+  //   localStorage.setItem("current-round", JSON.stringify(currentRound));
+  //   localStorage.setItem("board-colors", JSON.stringify(boardColors));
+  //   localStorage.setItem("count-pegs-filled", JSON.stringify(countPegsFilled));
+  //   localStorage.setItem("board-hints-state", JSON.stringify(boardHintsState));
+  //   localStorage.setItem("game-over", JSON.stringify(gameOver));
+  //   localStorage.setItem("game-won", JSON.stringify(gameWon));
+  // });
 
   const selectColorHandler = (color) => {
     setSelectedColor(color);
