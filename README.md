@@ -2,7 +2,7 @@
 
 Mastermind - The classic code breaking game. Do you have what it takes to win?
 
-[Link](https://github.com/sach0499/mastermind)
+[Demo Link](https://my-mastermind-game.netlify.app/)
 
 ---
 
