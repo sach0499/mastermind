@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./App.css";
 
@@ -41,7 +41,6 @@ const INITIAL_MASTER_COLOR = generateNDistinctColors(4, BASE_COLORS);
 
 function App() {
   const [masterColor, setMasterColor] = useState([...INITIAL_MASTER_COLOR]);
-
   const [boardColors, setBoardColors] = useState(INITIAL_BOARD_COLORS);
   const [boardHintsState, setBoardHintsState] = useState(INITIAL_HINTS_STATE);
   const [currentRound, setCurrentRound] = useState(FIRST_ROUND);
@@ -49,6 +48,36 @@ function App() {
   const [selectedColor, setSelectedColor] = useState(BASE_COLORS[0]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
+
+
+  // rehydrate state from local storage
+  useEffect(() => {
+    const isStateSaved = JSON.parse(localStorage.getItem("is-state-saved"));
+    if (isStateSaved) {
+      setMasterColor(JSON.parse(localStorage.getItem("master-color")));
+      setSelectedColor(JSON.parse(localStorage.getItem("selected-color")));
+      setCurrentRound(JSON.parse(localStorage.getItem("current-round")));
+      setBoardColors(JSON.parse(localStorage.getItem("board-colors")));
+      setCountPegsFilled(JSON.parse(localStorage.getItem("count-pegs-filled")));
+      setBoardHintsState(JSON.parse(localStorage.getItem("board-hints-state")));
+      setGameOver(JSON.parse(localStorage.getItem("game-over")));
+      setGameWon(JSON.parse(localStorage.getItem("game-won")));
+    }
+  }, []);
+
+  // save state on local storage
+  useEffect(() => {
+    localStorage.setItem("is-state-saved", JSON.stringify(true));
+
+    localStorage.setItem("master-color", JSON.stringify(masterColor));
+    localStorage.setItem("selected-color", JSON.stringify(selectedColor));
+    localStorage.setItem("current-round", JSON.stringify(currentRound));
+    localStorage.setItem("board-colors", JSON.stringify(boardColors));
+    localStorage.setItem("count-pegs-filled", JSON.stringify(countPegsFilled));
+    localStorage.setItem("board-hints-state", JSON.stringify(boardHintsState));
+    localStorage.setItem("game-over", JSON.stringify(gameOver));
+    localStorage.setItem("game-won", JSON.stringify(gameWon));
+  });
 
   const selectColorHandler = (color) => {
     setSelectedColor(color);
