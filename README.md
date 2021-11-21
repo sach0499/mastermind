@@ -24,5 +24,4 @@ color code peg placed in the wrong position.
 
 ## Credits
 
-Credits to [Zosia Korcz](https://zofiakorcz.pl/about.html) for creating a clone of mastermind and inspiring me to remake it. 
-Her tutorial about the game is also great.
+Credits to [Zosia Korcz](https://zofiakorcz.pl/about.html) for creating a clone of mastermind (her tutorial is also great) and [Tapan Awasthi](https://www.linkedin.com/in/tapan-awasthi02/) for letting me know about it. Thanks Zosia and Tapan. You guys are great.
